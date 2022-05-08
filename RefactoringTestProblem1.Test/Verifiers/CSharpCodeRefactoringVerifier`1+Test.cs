@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis.CodeRefactorings;
+﻿using System.Linq;
+using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp.Testing;
 using Microsoft.CodeAnalysis.Testing.Verifiers;
 
@@ -17,6 +18,9 @@ namespace RefactoringTestProblem1.Test
                     compilationOptions = compilationOptions.WithSpecificDiagnosticOptions(
                         compilationOptions.SpecificDiagnosticOptions.SetItems(CSharpVerifierHelper.NullableWarnings));
                     solution = solution.WithProjectCompilationOptions(projectId, compilationOptions);
+
+                    var documentId = solution.GetProject(projectId).DocumentIds.Single();
+                    solution = solution.WithDocumentFilePath(documentId, "x\\y.cs");
 
                     return solution;
                 });
